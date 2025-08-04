@@ -6,17 +6,6 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Form</title>
-
-  
-  <link rel="stylesheet" href="./css/reset.css" />
-  <link rel="stylesheet" href="./css/base.css" />
-  <link rel="stylesheet" href="./css/container.css" />
-  <link rel="stylesheet" href="./css/animations.css" />
-  <link rel="stylesheet" href="./css/header.css" />
-  <link rel="stylesheet" href="./css/vite-promo.css" />
-  <link rel="stylesheet" href="./css/badges.css" />
-  <link rel="stylesheet" href="./css/back-link.css" />
-  <link rel="stylesheet" href="./css/footer.css" />
   <link rel="stylesheet" href="./css/styles.css" />
 </head>
 
@@ -37,17 +26,21 @@
     <div class="container">
       <a class="back-link" href="./index.html">Go back</a>
       <h1 class="main-title">Form</h1>
-      <form class="feedback-form" autocomplete="off">
-        <label class="form-label">
-          Email
-          <input class="form-input" type="email" name="email" autofocus />
-        </label>
-        <label class="form-label">
-          Message
-          <textarea class="form-textarea" name="message" rows="8"></textarea>
-        </label>
-        <button class="btn" type="submit">Submit</button>
-      </form>
+      <div class="form-container">
+        <form class="feedback-form" autocomplete="off">
+          <label class="form-label">
+            Email
+            <input class="form-input" type="email" name="email" autofocus />
+          </label>
+          <label class="form-label">
+            Message
+            <textarea class="form-textarea" name="message" rows="8"></textarea>
+          </label>
+          <button class="btn" type="submit">
+            Submit
+          </button>
+        </form>
+      </div>
     </div>
   </main>
 

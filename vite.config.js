@@ -1,49 +1,48 @@
-// vite.config.js
 import { defineConfig } from 'vite';
 import { glob } from 'glob';
-import path from 'path';
 import injectHTML from 'vite-plugin-html-inject';
 import FullReload from 'vite-plugin-full-reload';
 import SortCss from 'postcss-sort-media-queries';
 
-export default defineConfig(({ command }) => ({
-  root: 'src',
-
-  build: {
-    outDir: '../dist',
-    emptyOutDir: true,
-    rollupOptions: {
-      // glob.sync найдёт src/index.html, src/1-gallery.html, src/2-form.html и т.д.
-      input: glob.sync('src/*.html').reduce((entries, file) => {
-        const name = path.basename(file, '.html');
-        // entries = { index: '/абсолютный/путь/к/src/index.html', gallery: '…', form: '…' }
-        entries[name] = path.resolve(__dirname, file);
-        return entries;
-      }, {}),
-      output: {
-        manualChunks(id) {
-          if (id.includes('node_modules')) {
-            return 'vendor';
-          }
+export default defineConfig(({ command }) => {
+  return {
+    define: {
+      [command === 'serve' ? 'global' : '_global']: {},
+    },
+    root: 'src',
+    build: {
+      sourcemap: true,
+      rollupOptions: {
+        input: glob.sync('./src/*.html'),
+        output: {
+          manualChunks(id) {
+            if (id.includes('node_modules')) {
+              return 'vendor';
+            }
+          },
+          entryFileNames: chunkInfo => {
+            if (chunkInfo.name === 'commonHelpers') {
+              return 'commonHelpers.js';
+            }
+            return '[name].js';
+          },
+          assetFileNames: assetInfo => {
+            if (assetInfo.name && assetInfo.name.endsWith('.html')) {
+              return '[name].[ext]';
+            }
+            return 'assets/[name]-[hash][extname]';
+          },
         },
-        entryFileNames: '[name].js',
-        assetFileNames: 'assets/[name]-[hash][extname]',
       },
+      outDir: '../dist',
+      emptyOutDir: true,
     },
-  },
-
-  plugins: [
-    // 1) Подставляем ваши partials (header.html, back-link.html, footer.html)
-    injectHTML(),
-
-    // 2) FullReload для мгновенной перезагрузки при изменении любых HTML
-    FullReload(['src/**/*.html']),
-  ],
-
-  css: {
-    postcss: {
-      // 3) Сортируем медиа-запросы «mobile-first»
-      plugins: [SortCss({ sort: 'mobile-first' })],
-    },
-  },
-}));
+    plugins: [
+      injectHTML(),
+      FullReload(['./src/**/**.html']),
+      SortCss({
+        sort: 'mobile-first',
+      }),
+    ],
+  };
+});

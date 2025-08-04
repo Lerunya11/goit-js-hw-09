@@ -1,12 +1,15 @@
 .footer {
   padding: 20px 0;
 }
+
 .footer-desc {
   text-align: center;
 }
+
 .footer-link {
   position: relative;
 }
+
 .footer-link::before {
   content: '';
   position: absolute;
